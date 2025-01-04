@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: "This is the database for the RAW tables in Jaffle shop database"
+    database: "{{ var('custom_db') }}"
+    schema: RAW
+    tables:
+      - name: jaffle_customers
+        description: "This table contains raw information of customers at Jaffle company"
+        columns:
+          - name: id
+            description: "This is the unique id of a Jaffle customer"
+            data_tests:
+              - unique
+              - not_null
+          - name: name
+            description: "This is the full name of a Jaffle customer"
+      - name: jaffle_items
+      - name: jaffle_orders
+      - name: jaffle_products
+      - name: jaffle_stores
+      - name: jaffle_supplies
