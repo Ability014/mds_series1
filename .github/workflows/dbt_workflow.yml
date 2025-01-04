@@ -37,42 +37,42 @@ jobs:
       run: |
         mkdir /home/runner/.dbt
         echo "This is my current working directory=$( pwd )"
-        cp ./jaffle_shop/profiles.yml /home/runner/.dbt/
+        cp ./profiles.yml /home/runner/.dbt/
         export snowflake_pass=${{ secrets.SNOWFLAKE_PASS }}
-        dbt deps --project-dir ./jaffle_shop --vars 'custom_db: mds_prod'
-        dbt run --project-dir ./jaffle_shop --vars 'custom_db: mds_prod'
-        dbt test --project-dir ./jaffle_shop --vars 'custom_db: mds_prod'
-        dbt docs generate --project-dir ./jaffle_shop --vars 'custom_db: mds_prod'
-        cp -r ./jaffle_shop/target/* ./Docs/
+        dbt deps --project-dir . --vars 'custom_db: mds_prod'
+        dbt run --project-dir . --vars 'custom_db: mds_prod'
+        dbt test --project-dir . --vars 'custom_db: mds_prod'
+        dbt docs generate --project-dir . --vars 'custom_db: mds_prod'
+        cp -r ./target/* ./Docs/
     - name: Deploy dbt docs
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: jaffle_shop/target
+        folder: target
     - name: Upload run_results.json
       uses: actions/upload-artifact@v4
       with:
         name: dbt-run-results
-        path: ./jaffle_shop/target/run_results.json
+        path: ./target/run_results.json
     - name: Upload manifest.json
       uses: actions/upload-artifact@v4
       with:
         name: dbt-manifest
-        path: ./jaffle_shop/target/manifest.json
+        path: ./target/manifest.json
     - name: Upload catalog.json
       uses: actions/upload-artifact@v4
       with:
         name: dbt-catalog
-        path: ./jaffle_shop/target/catalog.json
+        path: ./target/catalog.json
     - name: Upload graph_summary.json
       uses: actions/upload-artifact@v4
       with:
         name: dbt-graph_summary
-        path: ./jaffle_shop/target/graph_summary.json
+        path: ./target/graph_summary.json
     - name: Upload index.html
       uses: actions/upload-artifact@v4
       with:
         name: dbt-index
-        path: ./jaffle_shop/target/index.html
+        path: ./target/index.html
     - name: Download artifacts
       uses: actions/download-artifact@v4
     - name: Display structure of downloaded files
