@@ -43,7 +43,6 @@ jobs:
         dbt run --project-dir . --vars 'custom_db: mds_prod'
         dbt test --project-dir . --vars 'custom_db: mds_prod'
         dbt docs generate --project-dir . --vars 'custom_db: mds_prod'
-        cp -r ./target/* ./Docs/
     - name: Deploy dbt docs
       uses: JamesIves/github-pages-deploy-action@v4
       with:
