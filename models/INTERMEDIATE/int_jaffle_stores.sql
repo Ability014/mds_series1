@@ -1,0 +1,7 @@
+SELECT
+	STORE_ID,
+	STORE_NAME,
+	CAST(TAX_RATE As FLOAT) As TAX_RATE,
+    CAST(OPENED_AT As TIMESTAMP) As OPENED_AT,
+    LOADED_AT
+FROM {{ ref('stg_jaffle_stores') }}

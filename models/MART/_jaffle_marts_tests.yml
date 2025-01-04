@@ -1,0 +1,58 @@
+models:
+    - name: dim_customers
+      columns:
+        - name: customer_key
+          description: 'This is the unique for the customers table'
+          tests:
+            - unique
+            - not_null
+    - name: dim_products
+      columns:
+        - name: product_key
+          description: 'This is the unique key for the products table'
+          tests:
+            - unique
+            - not_null
+        - name: unit_price
+          description: 'This is the price per unit of a jaffle product'
+    - name: dim_stores
+      columns:
+        - name: store_key
+          description: 'This is the unique key for the stores table'
+          tests:
+            - unique
+            - not_null
+    - name: dim_supplies
+      columns:
+        - name: unique_key
+          description: 'This is the unique key for the supplies table'
+          tests:
+            - unique
+            - not_null
+        - name: product_key
+          tests:
+            - relationships:
+                to: ref('dim_products')
+                field: product_key
+    - name: fact_orders
+      columns:
+        - name: order_key
+          description: 'This is the unique key for the orders table'
+          tests:
+            - unique
+            - not_null
+        - name: customer_key
+          tests:
+            - relationships:
+                to: ref('dim_customers')
+                field: customer_key
+        - name: product_key
+          tests:
+            - relationships:
+                to: ref('dim_products')
+                field: product_key
+        - name: store_key
+          tests:
+            - relationships:
+                to: ref('dim_stores')
+                field: store_key

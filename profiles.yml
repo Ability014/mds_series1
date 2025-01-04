@@ -1,0 +1,23 @@
+jaffle_shop:
+  outputs:
+    dev:
+      account: '{{ env_var(''snowflake_acct'') }}'
+      database: mds_dev
+      password: '{{ env_var(''snowflake_pass'') }}'
+      role: mds_role
+      schema: raw
+      threads: 2
+      type: snowflake
+      user: '{{ env_var(''snowflake_user'') }}'
+      warehouse: '{{ env_var(''snowflake_wh'') }}'
+    prod:
+      account: '{{ env_var(''snowflake_acct'') }}'
+      database: mds_prod
+      password: '{{ env_var(''snowflake_pass'') }}'
+      role: mds_role
+      schema: raw
+      threads: 2
+      type: snowflake
+      user: '{{ env_var(''snowflake_user'') }}'
+      warehouse: '{{ env_var(''snowflake_wh'') }}'
+  target: dev
