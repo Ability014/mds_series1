@@ -32,7 +32,7 @@ jobs:
       env:
         snowflake_pass: ${{ secrets.SNOWFLAKE_PASS }}
         snowflake_user: ${{ secrets.SNOWFLAKE_USER }}
-        snowflake_account: ${{ secrets.SNOWFLAKE_ACCT }}
+        snowflake_acct: ${{ secrets.SNOWFLAKE_ACCT }}
         snowflake_wh: ${{ secrets.SNOWFLAKE_WH }}
       run: |
         mkdir /home/runner/.dbt
