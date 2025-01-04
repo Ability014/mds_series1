@@ -1,0 +1,102 @@
+name: autochek ELT Pipeline
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  snowflake_pass: ${{ secrets.SNOWFLAKE_PASS }}
+  
+jobs:
+  run-extract-load-to-snowflake:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - name: Install dependencies
+      run: pip install pandas sqlalchemy snowflake-sqlalchemy snowflake-connector-python
+    - name: Run EL Job
+      env:
+        snowflake_pass: ${{ secrets.SNOWFLAKE_PASS }}
+        snowflake_user: ${{ secrets.SNOWFLAKE_USER }}
+        snowflake_account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        snowflake_role: ${{ secrets.SNOWFLAKE_ROLE }}
+        snowflake_wh: ${{ secrets.SNOWFLAKE_WH }}
+      run: python ./scripts/python_el.py
+
+  dbt-project-run:
+    runs-on: ubuntu-latest
+    needs: run-extract-load-to-snowflake
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - name: Install dbt
+      run: pip install dbt-snowflake
+    - name: Run dbt
+      env:
+        snowflake_pass: ${{ secrets.SNOWFLAKE_PASS }}
+        snowflake_user: ${{ secrets.SNOWFLAKE_USER }}
+        snowflake_account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        snowflake_role: ${{ secrets.SNOWFLAKE_ROLE }}
+        snowflake_wh: ${{ secrets.SNOWFLAKE_WH }}
+      run: |
+        mkdir /home/runner/.dbt
+        echo "This is my current working directory=$( pwd )"
+        cp ./dbt_autochek/profiles.yml /home/runner/.dbt/
+        export snowflake_pass=${{ secrets.SNOWFLAKE_PASS }}
+        dbt deps --project-dir ./dbt_autochek
+        dbt run --project-dir ./dbt_autochek
+        dbt test --project-dir ./dbt_autochek
+        dbt docs generate --project-dir ./dbt_autochek
+        cp -r ./dbt_autochek/target/* ./Docs/
+    - name: Deploy dbt docs
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dbt_autochek/target
+    - name: Upload run_results.json
+      uses: actions/upload-artifact@v4
+      with:
+        name: dbt-run-results
+        path: ./dbt_autochek/target/run_results.json
+    - name: Upload manifest.json
+      uses: actions/upload-artifact@v4
+      with:
+        name: dbt-manifest
+        path: ./dbt_autochek/target/manifest.json
+    - name: Upload catalog.json
+      uses: actions/upload-artifact@v4
+      with:
+        name: dbt-catalog
+        path: ./dbt_autochek/target/catalog.json
+    - name: Upload graph_summary.json
+      uses: actions/upload-artifact@v4
+      with:
+        name: dbt-graph_summary
+        path: ./dbt_autochek/target/graph_summary.json
+    - name: Upload index.html
+      uses: actions/upload-artifact@v4
+      with:
+        name: dbt-index
+        path: ./dbt_autochek/target/index.html
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+    - name: Display structure of downloaded files
+      run: ls -R
