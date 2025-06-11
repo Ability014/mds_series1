@@ -40,7 +40,7 @@ models:
     example:
       +materialized: view
       +database: "{{ var('custom_db') }}"
-      +schema: RAW
+      +schema: "{{ 'RAW' ~ var('custom_schema') }}"
     STAGING:
       +materialized: view
       +transient: false
