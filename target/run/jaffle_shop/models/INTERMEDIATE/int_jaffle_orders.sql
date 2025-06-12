@@ -2,9 +2,11 @@
   
     
 
-        create or replace transient table mds_prod.INTERMEDIATE.int_jaffle_orders
-         as
-        (SELECT 
+create or replace transient table mds_prod.INTERMEDIATE.int_jaffle_orders
+    
+
+    
+    as (SELECT 
     ORDER_ID,
     CUSTOMER_ID,
     STORE_ID,
@@ -14,6 +16,8 @@
     CAST(ORDER_TOTAL As INTEGER) As ORDER_TOTAL,
     LOADED_AT,
 FROM mds_prod.STAGING.stg_jaffle_orders
-        );
-      
+    )
+;
+
+
   

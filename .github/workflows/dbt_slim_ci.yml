@@ -19,15 +19,17 @@ jobs:
       - name: Install dbt and deps
         run: |
           pip install dbt-snowflake
-          dbt deps
+          dbt deps --vars '{"custom_db":"mds_prod", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod
 
-      - name: Get manifest from master for state comparison
+      - name: Get manifest from main for state comparison
         run: |
           mkdir /home/runner/.dbt
           cp ./profiles.yml /home/runner/.dbt/
-          git fetch origin master
-          git checkout origin/master -- target/manifest.json
-          cp target/manifest.json /home/runner/.dbt/manifest.json
+          git fetch origin main
+          git checkout origin/main -- target/manifest.json
+          echo "This is the target directory=$( ls target/ )"
+          cp target/manifest.json /home/runner/.dbt/
+          cp target/manifest.json .
 
       - name: Build impacted models
         run: |
