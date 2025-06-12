@@ -19,7 +19,7 @@ jobs:
       - name: Install dbt and deps
         run: |
           pip install dbt-snowflake
-          dbt deps
+          dbt deps --vars '{"custom_db":"mds_prod", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod
 
       - name: Get manifest from master for state comparison
         run: |
