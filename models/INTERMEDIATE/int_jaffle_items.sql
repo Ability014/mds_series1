@@ -1,6 +1,6 @@
 SELECT 
     ITEM_ID,
 	SKU,
-	ORDER_ID,
+	ORDER_ID As ORDER_ID,
     LOADED_AT
 FROM {{ ref('stg_jaffle_items') }}
