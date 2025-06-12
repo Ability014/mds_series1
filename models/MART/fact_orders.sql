@@ -1,11 +1,11 @@
 
 SELECT 
-    {{ dbt_utils.generate_surrogate_key(['orders.ORDER_ID', 'ITEM_ID']) }} as ORDER_KEY,
+    {{ dbt_utils.generate_surrogate_key(['orders.ORDER_ID', 'ITEM_ID']) }} As ORDER_KEY,
     orders.ORDER_ID,
     ITEM_ID,
     {{ dbt_utils.generate_surrogate_key(['CUSTOMER_ID']) }} As CUSTOMER_KEY,
-    {{ dbt_utils.generate_surrogate_key(['items.SKU']) }} as PRODUCT_KEY,
-    {{ dbt_utils.generate_surrogate_key(['STORE_ID']) }} as STORE_KEY,
+    {{ dbt_utils.generate_surrogate_key(['items.SKU']) }} As PRODUCT_KEY,
+    {{ dbt_utils.generate_surrogate_key(['STORE_ID']) }} As STORE_KEY,
     SUBTOTAL,
     TAX_PAID,
     ORDERED_AT,

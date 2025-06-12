@@ -31,4 +31,4 @@ jobs:
 
       - name: Build impacted models
         run: |
-          dbt run --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod
+          dbt build --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod

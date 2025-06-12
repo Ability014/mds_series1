@@ -1,5 +1,5 @@
 SELECT 
-    {{ dbt_utils.generate_surrogate_key(['STORE_ID']) }} as STORE_KEY,
+    {{ dbt_utils.generate_surrogate_key(['STORE_ID']) }} As STORE_KEY,
     STORE_NAME,
 	TAX_RATE,
     OPENED_AT,
