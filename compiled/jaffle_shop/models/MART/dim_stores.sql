@@ -1,5 +1,5 @@
 SELECT 
-    md5(cast(coalesce(cast(STORE_ID as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as STORE_KEY,
+    md5(cast(coalesce(cast(STORE_ID as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) As STORE_KEY,
     STORE_NAME,
 	TAX_RATE,
     OPENED_AT,

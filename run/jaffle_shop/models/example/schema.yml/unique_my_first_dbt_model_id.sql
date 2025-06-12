@@ -11,12 +11,12 @@
     
 
 select
-    customer_key as unique_field,
+    id as unique_field,
     count(*) as n_records
 
-from mds_prod.MART.dim_customers
-where customer_key is not null
-group by customer_key
+from mds_prod.RAW.my_first_dbt_model
+where id is not null
+group by id
 having count(*) > 1
 
 

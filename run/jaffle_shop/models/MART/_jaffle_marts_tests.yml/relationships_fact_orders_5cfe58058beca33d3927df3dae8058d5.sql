@@ -12,7 +12,7 @@
 
 with child as (
     select product_key as from_field
-    from mds_prod.MART.dim_supplies
+    from mds_prod.MART.fact_orders
     where product_key is not null
 ),
 

@@ -1,18 +1,10 @@
 
-    select
-      count(*) as failures,
-      count(*) != 0 as should_warn,
-      count(*) != 0 as should_error
-    from (
-      
-    
-  
     
     
 
 with child as (
     select product_key as from_field
-    from mds_prod.MART.dim_supplies
+    from mds_prod.MART.fact_orders
     where product_key is not null
 ),
 
@@ -31,8 +23,3 @@ left join parent
 where parent.to_field is null
 
 
-
-  
-  
-      
-    ) dbt_internal_test

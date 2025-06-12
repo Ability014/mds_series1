@@ -1,27 +1,22 @@
-
-    select
+select
       count(*) as failures,
       count(*) != 0 as should_warn,
       count(*) != 0 as should_error
     from (
       
     
-  
-    
     
 
 select
-    customer_key as unique_field,
+    orders_key as unique_field,
     count(*) as n_records
 
-from mds_prod.MART.dim_customers
-where customer_key is not null
-group by customer_key
+from mds_prod.MART.fact_orders
+where orders_key is not null
+group by orders_key
 having count(*) > 1
 
 
 
-  
-  
       
     ) dbt_internal_test
