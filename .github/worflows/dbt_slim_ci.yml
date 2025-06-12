@@ -1,0 +1,34 @@
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt_ci:
+    runs-on: ubuntu-latest
+    env:
+      DBT_PR_SCHEMA: _pr_${{ github.event.pull_request.number }}
+      snowflake_pass: ${{ secrets.SNOWFLAKE_PASS }}
+      snowflake_user: ${{ secrets.SNOWFLAKE_USER }}
+      snowflake_acct: ${{ secrets.SNOWFLAKE_ACCT }}
+      snowflake_wh: ${{ secrets.SNOWFLAKE_WH }}
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+
+      - name: Install dbt and deps
+        run: |
+          pip install dbt-snowflake
+          dbt deps
+
+      - name: Get manifest from master for state comparison
+        run: |
+          mkdir /home/runner/.dbt
+          cp ./profiles.yml /home/runner/.dbt/
+          git fetch origin master
+          git checkout origin/master -- target/manifest.json
+          cp target/manifest.json /home/runner/.dbt/manifest.json
+
+      - name: Build impacted models
+        run: |
+          dbt build --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod

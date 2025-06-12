@@ -2,7 +2,7 @@
 
 
     {%- set default_database = target.database -%}
-    {%- if custom_database_name is none or target.name != 'dev' -%}
+    {%- if custom_database_name is none -%}
 
         {{ default_database }}
 
