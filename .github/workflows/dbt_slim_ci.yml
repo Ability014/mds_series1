@@ -27,7 +27,9 @@ jobs:
           cp ./profiles.yml /home/runner/.dbt/
           git fetch origin main
           git checkout origin/main -- target/manifest.json
-          cp target/manifest.json /home/runner/.dbt/manifest.json
+          echo "This is the target directory=$( ls target/ )"
+          cp target/manifest.json /home/runner/.dbt/
+          cp target/manifest.json .
 
       - name: Build impacted models
         run: |
