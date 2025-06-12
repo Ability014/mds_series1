@@ -1,5 +1,5 @@
 SELECT 
-    {{ dbt_utils.generate_surrogate_key(['SKU']) }} as PRODUCT_KEY,
+    {{ dbt_utils.generate_surrogate_key(['SKU']) }} As PRODUCT_KEY,
     PRODUCT_NAME,
 	PRODUCT_TYPE,
     UNIT_PRICE,

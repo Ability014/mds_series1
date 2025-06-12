@@ -45,12 +45,12 @@ models:
       +materialized: view
       +transient: false
       +database: "{{ var('custom_db') }}"
-      +schema: STAGING
+      +schema: "{{ 'STAGING' ~ var('custom_schema') }}"
     INTERMEDIATE:
       +materialized: table
       +database: "{{ var('custom_db') }}"
-      +schema: INTERMEDIATE
+      +schema: "{{ 'INTERMEDIATE' ~ var('custom_schema') }}"
     MART:
       +materialized: table
       +database: "{{ var('custom_db') }}"
-      +schema: MART
+      +schema: "{{ 'MART' ~ var('custom_schema') }}"
