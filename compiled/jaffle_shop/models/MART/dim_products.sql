@@ -1,5 +1,5 @@
 SELECT 
-    md5(cast(coalesce(cast(SKU as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as PRODUCT_KEY,
+    md5(cast(coalesce(cast(SKU as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) As PRODUCT_KEY,
     PRODUCT_NAME,
 	PRODUCT_TYPE,
     UNIT_PRICE,
