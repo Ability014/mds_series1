@@ -1,0 +1,35 @@
+name: Cleanup PR Schemas
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+
+jobs:
+  cleanup_schemas:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install Snowflake Connector
+        run: pip install snowflake-connector-python
+
+      - name: Delete PR Schemas from Snowflake
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASS }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_DATABASE: mds_prod
+          SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WH }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python scripts/delete_pr_schemas.py $PR_NUMBER
