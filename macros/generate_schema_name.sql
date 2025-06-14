@@ -1,15 +1,26 @@
 {% macro generate_schema_name(custom_schema_name, node) -%}
-
-
     {%- set default_schema = target.schema -%}
-    {%- if custom_schema_name is none -%}
+    {%- set custom_schema = var('custom_schema', '') -%}
+    {%- set selected_models = var('selected_models', '') -%}
 
-        {{ default_schema }}
-
+    {%- if 'STAGING' in node.fqn -%}
+        {% if 'INTERMEDIATE' in selected_models %}
+            {%- set custom_schema = '' -%}
+            {{ 'STAGING' ~ '' }}
+        {% else %}
+            {{ 'STAGING' ~ custom_schema }}
+        {% endif %}
+    {%- elif 'INTERMEDIATE' in node.fqn -%}
+        {% if 'MART' in selected_models and 'INTERMEDIATE' in selected_models %}
+            {{ 'INTERMEDIATE' ~ custom_schema }}
+        {% elif 'MART' in selected_models %}
+            {{ 'INTERMEDIATE' ~ '' }}
+        {% else %}
+            {{ 'INTERMEDIATE' ~ custom_schema }}
+        {% endif %}
     {%- else -%}
-
-        {{ custom_schema_name | trim }}
-
+        {{ 'MART' ~ custom_schema }}
     {%- endif -%}
 
 {%- endmacro %}
+

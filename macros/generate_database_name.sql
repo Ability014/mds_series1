@@ -6,6 +6,18 @@
 
         {{ default_database }}
 
+    {%- elif target.name == 'ci' and execute -%}
+
+        {% if 'STAGING' in node.fqn %}
+
+            {{ 'mds_prod' }}
+
+        {% else %}
+
+            {{ 'mds_ci' }}
+
+        {% endif %}
+
     {%- else -%}
 
         {{ custom_database_name }}
