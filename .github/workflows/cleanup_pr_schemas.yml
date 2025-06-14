@@ -1,9 +1,10 @@
 name: Cleanup PR Schemas
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - main  # or your default branch
+      - main
 
 jobs:
   cleanup_schemas:
