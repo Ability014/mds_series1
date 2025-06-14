@@ -4,14 +4,15 @@
     {%- set selected_models = var('selected_models', '') -%}
 
     {%- if 'STAGING' in node.fqn -%}
-        {% if 'INTERMEDIATE' in selected_models %}
-            {%- set custom_schema = '' -%}
+        {% if 'STAGING' in selected_models %}
+            {{ 'STAGING' ~ custom_schema }}
+        {% elif 'INTERMEDIATE' in selected_models %}
             {{ 'STAGING' ~ '' }}
         {% else %}
             {{ 'STAGING' ~ custom_schema }}
         {% endif %}
     {%- elif 'INTERMEDIATE' in node.fqn -%}
-        {% if 'MART' in selected_models and 'INTERMEDIATE' in selected_models %}
+        {% if 'INTERMEDIATE' in selected_models %}
             {{ 'INTERMEDIATE' ~ custom_schema }}
         {% elif 'MART' in selected_models %}
             {{ 'INTERMEDIATE' ~ '' }}
