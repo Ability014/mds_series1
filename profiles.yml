@@ -20,4 +20,14 @@ jaffle_shop:
       type: snowflake
       user: '{{ env_var(''snowflake_user'') }}'
       warehouse: '{{ env_var(''snowflake_wh'') }}'
+    ci:
+      account: '{{ env_var(''snowflake_acct'') }}'
+      database: mds_ci
+      password: '{{ env_var(''snowflake_pass'') }}'
+      role: mds_role
+      schema: raw
+      threads: 2
+      type: snowflake
+      user: '{{ env_var(''snowflake_user'') }}'
+      warehouse: '{{ env_var(''snowflake_wh'') }}'
   target: dev
