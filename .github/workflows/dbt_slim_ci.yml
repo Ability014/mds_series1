@@ -33,4 +33,7 @@ jobs:
 
       - name: Build impacted models
         run: |
-          dbt build --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod
+          changed_models=$(dbt ls --select state:modified --state . \
+          --vars '{"custom_db":"mds_prod", "custom_schema":"'$DBT_PR_SCHEMA'"}' --target prod --resource-type model \
+          | grep '^jaffle_shop' | sed "s/.*/'&'/" | paste -sd, - | sed 's/^/[/;s/$/]/')
+          dbt build --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema":"'$DBT_PR_SCHEMA'", "selected_models":"'$changed_models'"}' --target prod
