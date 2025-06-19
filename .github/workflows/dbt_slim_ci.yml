@@ -36,4 +36,4 @@ jobs:
           changed_models=$(dbt ls --select state:modified --state . \
           --vars '{"custom_db":"mds_prod", "custom_schema":"'$DBT_PR_SCHEMA'"}' --target prod --resource-type model \
           | grep '^jaffle_shop' | sed "s/.*/'&'/" | paste -sd, - | sed 's/^/[/;s/$/]/')
-          dbt run --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema":"'$DBT_PR_SCHEMA'", "selected_models":"'$changed_models'"}' --target prod
+          dbt run --models +state:modified+ --state . --vars '{"custom_db":"mds_prod", "custom_schema":"'$DBT_PR_SCHEMA'", "selected_models":"'$changed_models'"}' --target prod
