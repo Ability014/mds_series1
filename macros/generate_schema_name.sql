@@ -2,25 +2,31 @@
     {%- set default_schema = target.schema -%}
     {%- set custom_schema = var('custom_schema', '') -%}
     {%- set selected_models = var('selected_models', '') -%}
+    {%- set stg_schema = var('stg_schema', '') -%}
+    {%- set int_schema = var('int_schema', '') -%}
+    {%- set mart_schema = var('mart_schema', '') -%}
+    {%- set current_node = node.fqn -%}
 
     {%- if 'STAGING' in node.fqn -%}
-        {% if 'STAGING' in selected_models %}
+        {% if current_node[2] in selected_models %}
             {{ 'STAGING' ~ custom_schema }}
-        {% elif 'INTERMEDIATE' in selected_models %}
-            {{ 'STAGING' ~ '' }}
-        {% else %}
-            {{ 'STAGING' ~ custom_schema }}
+        {%- else -%}
+            {{ stg_schema }}
         {% endif %}
-    {%- elif 'INTERMEDIATE' in node.fqn -%}
-        {% if 'INTERMEDIATE' in selected_models %}
+    {%- endif -%}
+    {%- if 'INTERMEDIATE' in node.fqn -%}
+        {% if current_node[2] in selected_models %}
             {{ 'INTERMEDIATE' ~ custom_schema }}
-        {% elif 'MART' in selected_models %}
-            {{ 'INTERMEDIATE' ~ '' }}
-        {% else %}
-            {{ 'INTERMEDIATE' ~ custom_schema }}
+        {%- else -%}
+            {{ int_schema }}
         {% endif %}
-    {%- else -%}
-        {{ 'MART' ~ custom_schema }}
+    {%- endif -%}
+    {%- if 'MART' in node.fqn -%}
+        {% if current_node[2] in selected_models %}
+            {{ 'MART' ~ custom_schema }}
+        {%- else -%}
+            {{ mart_schema }}
+        {% endif %}
     {%- endif -%}
 
 {%- endmacro %}

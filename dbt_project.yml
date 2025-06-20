@@ -44,9 +44,12 @@ models:
       +materialized: view
       +transient: false
       +database: "{{ var('custom_db') }}"
+      +schema: "{{ var('stg_schema') }}"
     INTERMEDIATE:
       +materialized: table
       +database: "{{ var('custom_db') }}"
+      +schema: "{{ var('int_schema') }}"
     MART:
       +materialized: table
       +database: "{{ var('custom_db') }}"
+      +schema: "{{ var('mart_schema') }}"
