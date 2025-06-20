@@ -19,7 +19,7 @@ jobs:
       - name: Install dbt and deps
         run: |
           pip install dbt-snowflake
-          dbt deps --vars '{"custom_db":"mds_prod", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod
+          dbt deps --vars '{"custom_db":"mds_prod", "stg_schema":"STAGING", "int_schema":"INTERMEDIATE", "mart_schema":"MART", "custom_schema": "'$DBT_PR_SCHEMA'"}' --target prod
 
       - name: Get manifest from main for state comparison
         run: |
@@ -34,6 +34,6 @@ jobs:
       - name: Build impacted models
         run: |
           changed_models=$(dbt ls --select state:modified+ --state . \
-          --vars '{"custom_db":"mds_prod", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART", "custom_schema":"'$DBT_PR_SCHEMA'"}' --target prod --resource-type model \
+          --vars '{"custom_db":"mds_prod", "stg_schema":"STAGING", "int_schema":"INTERMEDIATE", "mart_schema":"MART", "custom_schema":"'$DBT_PR_SCHEMA'"}' --target prod --resource-type model \
           | grep '^jaffle_shop' | sed "s/.*/'&'/" | paste -sd, - | sed 's/^/[/;s/$/]/')
-          dbt run --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART", "custom_schema":"'$DBT_PR_SCHEMA'", "selected_models":"'$changed_models'"}' --target prod
+          dbt run --models state:modified+ --state . --vars '{"custom_db":"mds_prod", "stg_schema":"STAGING", "int_schema":"INTERMEDIATE", "mart_schema":"MART", "custom_schema":"'$DBT_PR_SCHEMA'", "selected_models":"'$changed_models'"}' --target prod
