@@ -36,10 +36,10 @@ jobs:
         echo "This is my current working directory=$( pwd )"
         cp ./profiles.yml /home/runner/.dbt/
         export snowflake_pass=${{ secrets.SNOWFLAKE_PASS }}
-        dbt deps --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": ""}' --target prod
-        dbt run --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": ""}' --target prod
-        dbt test --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": ""}' --target prod
-        dbt docs generate --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": ""}' --target prod
+        dbt deps --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": "", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART"}' --target prod
+        dbt run --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": "", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART"}' --target prod
+        dbt test --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": "", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART"}' --target prod
+        dbt docs generate --project-dir . --vars '{"custom_db":"mds_prod", "custom_schema": "", "stg_schema":"STAGING", "int_schema":"INTERMDIATE", "mart_schema":"MART"}' --target prod
     - name: Commit manifest.json
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
