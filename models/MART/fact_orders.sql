@@ -10,7 +10,7 @@ SELECT
     TAX_PAID,
     ORDERED_AT,
     ORDER_TOTAL,
-    orders.LOADED_AT
+    orders.LOADED_AT AS LOADED_AT
 FROM {{ ref('int_jaffle_orders') }} orders
 LEFT JOIN {{ ref('int_jaffle_items') }} items
 ON orders.ORDER_ID = items.ORDER_ID
