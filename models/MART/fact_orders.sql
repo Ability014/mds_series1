@@ -1,7 +1,7 @@
 
 SELECT 
     {{ dbt_utils.generate_surrogate_key(['orders.ORDER_ID', 'ITEM_ID']) }} AS ORDER_KEY,
-    orders.ORDER_ID,
+    orders.ORDER_ID AS ORDER_ID,
     ITEM_ID,
     {{ dbt_utils.generate_surrogate_key(['CUSTOMER_ID']) }} AS CUSTOMER_KEY,
     {{ dbt_utils.generate_surrogate_key(['items.SKU']) }} AS PRODUCT_KEY,
